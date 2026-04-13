@@ -1,0 +1,74 @@
+import { Link } from 'react-router-dom';
+import { Challenge } from '../../types/challenge';
+import Card from '../common/Card';
+import Badge from '../common/Badge';
+import Button from '../common/Button';
+
+interface ChallengeCardProps {
+  challenge: Challenge;
+}
+
+export default function ChallengeCard({ challenge }: ChallengeCardProps) {
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'beginner':
+        return 'success';
+      case 'intermediate':
+        return 'warning';
+      case 'advanced':
+        return 'info';
+      default:
+        return 'default';
+    }
+  };
+
+  return (
+    <Card hoverable className="overflow-hidden">
+      <div className="h-48 overflow-hidden">
+        <img
+          src={challenge.imageUrl}
+          alt={challenge.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-3">
+          <Badge variant={getDifficultyColor(challenge.difficulty)}>
+            {challenge.difficulty}
+          </Badge>
+          <span className="text-sm text-gray-500 capitalize">{challenge.category}</span>
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-900 mb-2">
+          {challenge.title}
+        </h3>
+
+        <p className="text-gray-600 mb-4 line-clamp-2">
+          {challenge.description}
+        </p>
+
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+          <span className="flex items-center">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {challenge.duration}
+          </span>
+          <span className="flex items-center">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {challenge.participants.toLocaleString()} joined
+          </span>
+        </div>
+
+        <Link to={`/challenges/${challenge.id}`}>
+          <Button fullWidth>
+            View Details
+          </Button>
+        </Link>
+      </div>
+    </Card>
+  );
+}
