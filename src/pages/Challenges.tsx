@@ -1,0 +1,123 @@
+import { useState } from 'react';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import ChallengeCard from '../components/features/ChallengeCard';
+import { challenges } from '../constants/challenges';
+import { ChallengeCategory, DifficultyLevel } from '../types/challenge';
+
+export default function Challenges() {
+  const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory | 'all'>('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'all'>('all');
+
+  const filteredChallenges = challenges.filter((challenge) => {
+    const categoryMatch = selectedCategory === 'all' || challenge.category === selectedCategory;
+    const difficultyMatch = selectedDifficulty === 'all' || challenge.difficulty === selectedDifficulty;
+    return categoryMatch && difficultyMatch;
+  });
+
+  const categories: Array<ChallengeCategory | 'all'> = ['all', 'running', 'cycling', 'walking', 'mixed', 'strength'];
+  const difficulties: Array<DifficultyLevel | 'all'> = ['all', 'beginner', 'intermediate', 'advanced'];
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      {/* Header */}
+      <section className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white py-16">
+        <div className="container-custom text-center">
+          <h1 className="text-5xl font-bold mb-4 text-white">Fitness Challenges</h1>
+          <p className="text-xl text-blue-100">
+            Choose from a variety of challenges to match your fitness goals
+          </p>
+        </div>
+      </section>
+
+      {/* Filters */}
+      <section className="bg-white shadow-sm sticky top-16 z-40 py-4">
+        <div className="container-custom">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Category Filter */}
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedCategory === category
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Difficulty Filter */}
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
+              <div className="flex flex-wrap gap-2">
+                {difficulties.map((difficulty) => (
+                  <button
+                    key={difficulty}
+                    onClick={() => setSelectedDifficulty(difficulty)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedDifficulty === difficulty
+                        ? 'bg-primary-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {difficulty === 'all' ? 'All' : difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Challenges Grid */}
+      <section className="py-12 bg-gray-50 flex-1">
+        <div className="container-custom">
+          <div className="mb-6">
+            <p className="text-gray-600">
+              Showing <span className="font-semibold text-gray-900">{filteredChallenges.length}</span>{' '}
+              {filteredChallenges.length === 1 ? 'challenge' : 'challenges'}
+            </p>
+          </div>
+
+          {filteredChallenges.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredChallenges.map((challenge) => (
+                <ChallengeCard key={challenge.id} challenge={challenge} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <svg
+                className="mx-auto h-24 w-24 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h3 className="mt-4 text-xl font-medium text-gray-900">No challenges found</h3>
+              <p className="mt-2 text-gray-500">Try adjusting your filters to see more results.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
