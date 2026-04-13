@@ -4,6 +4,7 @@ import Footer from '../components/layout/Footer';
 import ChallengeCard from '../components/features/ChallengeCard';
 import { challenges } from '../constants/challenges';
 import { ChallengeCategory, DifficultyLevel } from '../types/challenge';
+import { ChallengeConfig } from '../lib/config';
 
 export default function Challenges() {
   const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory | 'all'>('all');
@@ -15,8 +16,8 @@ export default function Challenges() {
     return categoryMatch && difficultyMatch;
   });
 
-  const categories: Array<ChallengeCategory | 'all'> = ['all', 'running', 'cycling', 'walking', 'mixed', 'strength'];
-  const difficulties: Array<DifficultyLevel | 'all'> = ['all', 'beginner', 'intermediate', 'advanced'];
+  const categories: Array<ChallengeCategory | 'all'> = ['all', ...ChallengeConfig.CATEGORIES];
+  const difficulties: Array<DifficultyLevel | 'all'> = ['all', ...ChallengeConfig.DIFFICULTY_LEVELS];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -50,7 +51,7 @@ export default function Challenges() {
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
+                    {category === 'all' ? 'All' : ChallengeConfig.getCategoryDisplayName(category)}
                   </button>
                 ))}
               </div>
@@ -70,7 +71,7 @@ export default function Challenges() {
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {difficulty === 'all' ? 'All' : difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                    {difficulty === 'all' ? 'All' : ChallengeConfig.getDifficultyDisplayName(difficulty)}
                   </button>
                 ))}
               </div>
