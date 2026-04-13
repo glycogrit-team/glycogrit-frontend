@@ -1,0 +1,12 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "master": true,
+      "staging": true
+    }
+  },
+  "github": {
+    "silent": false,
+    "autoAlias": true
+  }
+}
