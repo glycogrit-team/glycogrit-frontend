@@ -3,25 +3,13 @@ import { Challenge } from '../../types/challenge';
 import Card from '../common/Card';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
+import { ChallengeConfig, RouteConfig } from '../../lib/config';
 
 interface ChallengeCardProps {
   challenge: Challenge;
 }
 
 export default function ChallengeCard({ challenge }: ChallengeCardProps) {
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'beginner':
-        return 'success';
-      case 'intermediate':
-        return 'warning';
-      case 'advanced':
-        return 'info';
-      default:
-        return 'default';
-    }
-  };
-
   return (
     <Card hoverable className="overflow-hidden">
       <div className="h-48 overflow-hidden">
@@ -34,10 +22,12 @@ export default function ChallengeCard({ challenge }: ChallengeCardProps) {
 
       <div className="p-6">
         <div className="flex items-center justify-between mb-3">
-          <Badge variant={getDifficultyColor(challenge.difficulty)}>
-            {challenge.difficulty}
+          <Badge variant={ChallengeConfig.getDifficultyColor(challenge.difficulty)}>
+            {ChallengeConfig.getDifficultyDisplayName(challenge.difficulty)}
           </Badge>
-          <span className="text-sm text-gray-500 capitalize">{challenge.category}</span>
+          <span className="text-sm text-gray-500">
+            {ChallengeConfig.getCategoryDisplayName(challenge.category)}
+          </span>
         </div>
 
         <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -63,7 +53,7 @@ export default function ChallengeCard({ challenge }: ChallengeCardProps) {
           </span>
         </div>
 
-        <Link to={`/challenges/${challenge.id}`}>
+        <Link to={RouteConfig.getChallengeDetailUrl(challenge.id)}>
           <Button fullWidth>
             View Details
           </Button>
