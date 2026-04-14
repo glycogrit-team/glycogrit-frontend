@@ -2,7 +2,31 @@
 
 Welcome to the GlycoGrit Frontend documentation! This wiki serves as the central knowledge base for developers working on the project.
 
-## 📚 Documentation Index
+## 📚 Documentation Structure
+
+We use a **hybrid documentation approach**:
+
+### 💻 In-Repository Documentation (You're here!)
+Technical documentation for developers:
+- **[Coding Standards](./01-Coding-Standards.md)** - TypeScript, React, and formatting conventions
+- **[Project Structure](./02-Project-Structure.md)** - Folder organization and architecture
+- **[Security Best Practices](./04-Security-Best-Practices.md)** - XSS, CSRF, auth, and security patterns
+- **[Design Patterns](./05-Design-Patterns.md)** - Architectural patterns and best practices
+- **[Component Guidelines](./06-Component-Guidelines.md)** - How to build and structure components
+- **[State Management](./07-State-Management.md)** - Hooks, Context, and state patterns
+- **[Styling Guide](./08-Styling-Guide.md)** - Tailwind CSS usage and theming
+
+### 📖 GitHub Wiki
+Process documentation and operational guides:
+- **[Deployment Guide](https://github.com/ygahlot/runnersParadise/wiki/Deployment-Guide)** - Vercel setup, DNS configuration, environments
+- **[Git Workflow](https://github.com/ygahlot/runnersParadise/wiki/Git-Workflow)** - Branching strategy, commits, pull requests
+- **[Troubleshooting](https://github.com/ygahlot/runnersParadise/wiki/Troubleshooting)** - Common issues and solutions
+
+**→ [Visit GitHub Wiki for operational guides](https://github.com/ygahlot/runnersParadise/wiki)**
+
+---
+
+## 📚 Technical Documentation Index
 
 ### Getting Started
 1. [Project Structure](./02-Project-Structure.md) - Folder organization and architecture
@@ -14,20 +38,8 @@ Welcome to the GlycoGrit Frontend documentation! This wiki serves as the central
 5. [State Management](./07-State-Management.md) - Hooks, Context, and state patterns
 6. [Styling Guide](./08-Styling-Guide.md) - Tailwind CSS usage and theming
 
-### Deployment & Operations
-7. [Deployment Guide](./03-Deployment-Guide.md) - Vercel setup, DNS, and CI/CD
-8. [Environment Configuration](./09-Environment-Setup.md) - Local development and env variables
-9. [Monitoring & Debugging](./10-Monitoring.md) - Logs, analytics, and troubleshooting
-
-### Security & Quality
-10. [Security Best Practices](./04-Security-Best-Practices.md) - XSS, CSRF, auth, and more
-11. [Testing Strategy](./11-Testing.md) - Unit, integration, and E2E testing
-12. [Performance Optimization](./12-Performance.md) - Code splitting, lazy loading, and caching
-
-### Contributing
-13. [Git Workflow](./13-Git-Workflow.md) - Branching, committing, and PRs
-14. [Code Review Guide](./14-Code-Review.md) - What to look for in reviews
-15. [Troubleshooting](./15-Troubleshooting.md) - Common issues and solutions
+### Security
+7. [Security Best Practices](./04-Security-Best-Practices.md) - XSS, CSRF, auth, and more
 
 ---
 
@@ -102,17 +114,6 @@ Understand the folder structure and how code is organized.
 - Pages, hooks, utils, and lib organization
 - Path aliases and barrel exports
 - Co-location strategies
-
-### [03. Deployment Guide](./03-Deployment-Guide.md)
-Everything about deploying to production and managing environments.
-
-**Key Topics:**
-- Vercel setup and configuration
-- Environment management (dev, staging, prod)
-- DNS and domain configuration
-- CI/CD workflow
-- Rollback procedures
-- Monitoring and debugging
 
 ### [04. Security Best Practices](./04-Security-Best-Practices.md)
 Critical security guidelines to protect users and data.
