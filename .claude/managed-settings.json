@@ -1,0 +1,125 @@
+{
+  "$schema": "https://claude.ai/schemas/managed-settings.json",
+  "description": "Claude Code managed settings for GlycoGrit project - Security-focused permissions based on NOVA project patterns",
+
+  "model": "claude-sonnet-4-5",
+
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "NODE_ENV": "development"
+  },
+
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(npm list:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(which:*)",
+      "Bash(node:*)",
+      "Bash(tsx:*)",
+      "Bash(tsc:*)"
+    ],
+
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod:*)",
+      "Bash(chown:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(nc:*)",
+      "Bash(telnet:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(rsync:*)",
+      "Bash(git push:*)",
+      "Bash(git force-push:*)",
+      "Bash(git remote:*)",
+      "Bash(git config --global:*)",
+      "Bash(npm publish:*)",
+      "Bash(npm unpublish:*)",
+      "Bash(gh secret:*)",
+      "Bash(gh auth login:*)",
+      "Bash(gh api:*)",
+      "Read(.env)",
+      "Read(.env.local)",
+      "Read(.env.*.local)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/id_rsa*)",
+      "Read(**/*_rsa)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/*.crt)",
+      "Read(**/*.cer)",
+      "Read(**/config/secrets*)",
+      "Read(.npmrc)",
+      "Read(.yarnrc)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)",
+      "Read(**/passwords.txt)",
+      "Read(**/credentials*)",
+      "Edit(.env*)",
+      "Edit(**/.env*)",
+      "Edit(**/secrets/**)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.key)",
+      "Write(.env*)",
+      "Write(**/.env*)",
+      "Write(**/secrets/**)",
+      "Write(**/*.pem)",
+      "Write(**/*.key)",
+      "WebFetch",
+      "WebSearch"
+    ]
+  },
+
+  "comments": {
+    "security": "This configuration follows NOVA project security patterns",
+    "secrets_protection": "All secret files (.env, .pem, .key, etc.) are blocked from Read/Write/Edit",
+    "destructive_commands": "Destructive bash commands (rm -rf, sudo, chmod) are blocked",
+    "network_commands": "Network commands (curl, wget, ssh) are blocked for security",
+    "git_safety": "Git push and remote operations are blocked to prevent accidental pushes",
+    "npm_safety": "NPM publish operations are blocked to prevent accidental package releases",
+    "read_only_operations": "Claude can read code, run tests, and analyze but cannot modify secrets",
+    "development_commands": "Development commands (npm run, git status, build tools) are allowed"
+  },
+
+  "rationale": {
+    "allow_patterns": [
+      "Read/Grep/Glob: Code analysis and exploration",
+      "git status/diff/log: Understanding code changes",
+      "npm run/test: Running development tasks",
+      "ls/pwd/echo/cat: Basic file system navigation"
+    ],
+    "deny_patterns": [
+      "Secret files: Prevent exposure of credentials and keys",
+      "Destructive commands: Prevent accidental data loss",
+      "Network commands: Prevent unauthorized external access",
+      "Git push: Prevent accidental code pushes",
+      "NPM publish: Prevent accidental package releases"
+    ]
+  }
+}

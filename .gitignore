@@ -1,3 +1,8 @@
+# ============================================
+# GlycoGrit .gitignore
+# Based on NOVA project security patterns
+# ============================================
+
 # Logs
 logs
 *.log
@@ -6,19 +11,169 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+*.log.*
 
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Build output
 dist
 dist-ssr
-*.local
+build
+.next
+out
+.nuxt
+.cache
+.parcel-cache
 
+# Local environment files (CRITICAL - Never commit these!)
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.backup
+
+# ============================================
+# SECURITY: Secrets and credentials
+# ============================================
+# NEVER commit these files!
+
+# API keys and tokens
+**/secrets/
+**/config/secrets*
+credentials.json
+auth_keys.json
+service-account*.json
+
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+**/ssl/*
+**/certs/*
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+*.pub
+*_rsa
+*_rsa.pub
+
+# AWS credentials
+.aws/
+**/.aws/credentials
+**/.aws/config
+
+# Cloud provider credentials
+.gcloud/
+.azure/
+.terraform/
+
+# Package manager auth
+.npmrc
+.yarnrc
+.yarnrc.yml
+
+# Database credentials
+*.db-credentials
+database.yml
+db-config.json
+
+# Passwords and tokens
+passwords.txt
+tokens.txt
+secrets.txt
+
+# ============================================
 # Editor directories and files
+# ============================================
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Testing and coverage
+# ============================================
+coverage
+*.lcov
+.nyc_output
+.jest-cache
+test-results/
+playwright-report/
+
+# ============================================
+# Temporary files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.backup
+.cache/
+tmp/
+temp/
+
+# ============================================
+# Vercel and deployment
+# ============================================
+.vercel
+.vercel.json
+
+# ============================================
+# Optional: Claude Code
+# ============================================
+# Uncomment if you want to keep Claude settings private
+# .claude/settings.local.json
+
+# ============================================
+# Optional: Debug and profiling
+# ============================================
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+
+# ============================================
+# Optional: Archive files
+# ============================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Backup files
+ARCHITECTURE.md.backup
+*.md.backup
