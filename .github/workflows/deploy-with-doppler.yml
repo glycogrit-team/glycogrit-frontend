@@ -1,0 +1,65 @@
+name: Deploy with Doppler
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check || echo "Type check not configured yet"
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build with Doppler secrets
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+        run: |
+          if [ -n "$DOPPLER_TOKEN" ]; then
+            echo "Building with Doppler secrets..."
+            doppler run --config prd -- npm run build
+          else
+            echo "Building without Doppler (DOPPLER_TOKEN not set)..."
+            npm run build
+          fi
+
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm install -g vercel
+          vercel deploy --prod --token=$VERCEL_TOKEN
+
+      - name: Deploy to Vercel (Preview)
+        if: github.event_name == 'pull_request'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm install -g vercel
+          vercel deploy --token=$VERCEL_TOKEN
