@@ -104,6 +104,41 @@ case $CONTEXT in
     cat /tmp/security.md
     ;;
 
+  "project-management")
+    echo "Context: Project Management & Planning"
+    echo ""
+    fetch_wiki "Project-Management" "Project Management" > /tmp/project-mgmt.md
+    fetch_wiki "Current-Tasks" "Current Tasks" > /tmp/current-tasks.md
+
+    echo -e "\n${BLUE}═══ Project Management Guide ═══${NC}"
+    extract_summary "$(cat /tmp/project-mgmt.md)" 30
+    echo ""
+    echo -e "${BLUE}═══ Current Sprint Tasks ═══${NC}"
+    extract_summary "$(cat /tmp/current-tasks.md)" 30
+    ;;
+
+  "deployment")
+    echo "Context: Deployment & Infrastructure"
+    echo ""
+    fetch_wiki "Deployment-Guide" "Deployment Guide" > /tmp/deployment.md
+
+    echo -e "\n${BLUE}═══ Deployment Guide ═══${NC}"
+    cat /tmp/deployment.md
+    ;;
+
+  "planning")
+    echo "Context: Roadmap & Planning"
+    echo ""
+    fetch_wiki "Product-Roadmap" "Product Roadmap" > /tmp/roadmap.md
+    fetch_wiki "Current-Tasks" "Current Tasks" > /tmp/current-tasks.md
+
+    echo -e "\n${BLUE}═══ Product Roadmap Summary ═══${NC}"
+    extract_summary "$(cat /tmp/roadmap.md)" 40
+    echo ""
+    echo -e "${BLUE}═══ Current Sprint ═══${NC}"
+    extract_summary "$(cat /tmp/current-tasks.md)" 30
+    ;;
+
   "full"|*)
     echo "Context: Full Project Context"
     echo ""

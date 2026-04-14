@@ -1,11 +1,11 @@
 ---
 name: wiki-context
-description: "Automatically fetches essential wiki pages (Coding Standards, Design Patterns, Security) from GitHub Wiki to provide context for code analysis and development. Triggers when relevant architectural or coding standard questions arise."
+description: "Automatically fetches essential wiki pages (Coding Standards, Design Patterns, Security, Project Management, Deployment) from GitHub Wiki to provide context for code analysis, development, and project planning. Triggers when relevant architectural, coding standard, deployment, or planning questions arise."
 ---
 
 # Wiki Context Skill
 
-This skill automatically fetches important wiki documentation from GitHub Wiki to provide Claude with context about the project's coding standards, architecture patterns, and security practices.
+This skill automatically fetches important wiki documentation from GitHub Wiki to provide Claude with context about the project's coding standards, architecture patterns, security practices, deployment infrastructure, and project management.
 
 ## When This Skill Activates
 
@@ -15,26 +15,49 @@ This skill is automatically invoked when:
 - Reviewing security implementations
 - Answering questions about project conventions
 - Creating new components or patterns
+- Discussing deployment or infrastructure
+- Planning features or reviewing roadmap
+- Managing tasks or sprint planning
 
 ## Wiki Pages Fetched
 
-### Core Documentation (Always Fetched)
+### Core Documentation (Development)
 1. **Coding Standards** - TypeScript patterns, naming conventions, file organization
 2. **Design Patterns** - Singleton, Configuration Classes, Custom Hooks, Error Handling
 3. **Security Best Practices** - XSS, CSRF, authentication, secrets management
 
-### Context-Specific (Fetched When Relevant)
+### Context-Specific Development
 4. **Component Guidelines** - When working with React components
 5. **State Management** - When implementing state logic
 6. **Project Structure** - When organizing files or modules
 
+### Project Management & Planning
+7. **Project Management** - GitHub Projects workflow, task tracking, sprint ceremonies
+8. **Current Tasks** - Active sprint tasks, next steps, immediate action items
+9. **Product Roadmap** - Development phases, milestones, long-term vision
+
+### Deployment & Operations
+10. **Deployment Guide** - Vercel setup, Railway backend, multi-service architecture, DNS, security
+
 ## How It Works
 
 ```bash
-# Fetch essential wiki pages
-gh api repos/glycogrit-team/glycogrit-frontend/wiki/01-Coding-Standards
-gh api repos/glycogrit-team/glycogrit-frontend/wiki/05-Design-Patterns
-gh api repos/glycogrit-team/glycogrit-frontend/wiki/04-Security-Best-Practices
+# Usage: wiki-context.sh [context-mode]
+# Available modes:
+#   full                - All core development pages (default)
+#   code-review         - Coding Standards + Security
+#   component           - Component Guidelines + Design Patterns
+#   architecture        - Design Patterns + Project Structure
+#   security            - Security Best Practices (full)
+#   project-management  - Project Management + Current Tasks
+#   deployment          - Deployment Guide (full)
+#   planning            - Product Roadmap + Current Tasks
+
+# Examples:
+./wiki-context.sh full                # Core development context
+./wiki-context.sh deployment          # Infrastructure questions
+./wiki-context.sh project-management  # Task tracking, workflow
+./wiki-context.sh planning            # Roadmap and sprint planning
 ```
 
 ## Output Format
@@ -87,15 +110,19 @@ When this skill runs successfully, it provides:
 
 ### Smart Context Loading
 
-The skill is intelligent about what to load:
+The skill is intelligent about what to load based on context:
 
-| Task | Wiki Pages Loaded |
-|------|-------------------|
-| Code review | Coding Standards, Security |
-| New component | Coding Standards, Component Guidelines, Design Patterns |
-| API integration | Design Patterns (Singleton), Security |
-| State management | State Management, Design Patterns (Hooks) |
-| Architecture decision | All core pages |
+| Task | Wiki Pages Loaded | Context Mode |
+|------|-------------------|--------------|
+| Code review | Coding Standards, Security | `code-review` |
+| New component | Coding Standards, Component Guidelines, Design Patterns | `component` |
+| API integration | Design Patterns (Singleton), Security | `security` |
+| State management | State Management, Design Patterns (Hooks) | `component` |
+| Architecture decision | Design Patterns, Project Structure | `architecture` |
+| Deployment questions | Deployment Guide | `deployment` |
+| Task planning | Current Tasks, Project Management | `project-management` |
+| Roadmap review | Product Roadmap, Current Tasks | `planning` |
+| General development | All core development pages | `full` |
 
 ## Script Reference
 
