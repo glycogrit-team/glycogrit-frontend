@@ -1,0 +1,19 @@
+# Doppler Configuration File
+# This file configures the Doppler CLI for this project
+# It is safe to commit this file to version control
+
+# Project setup
+setup:
+  project: glycogrit-frontend
+  config: dev
+
+# Default config for each environment
+configs:
+  dev:
+    description: "Local development environment"
+
+  staging:
+    description: "Staging environment (preview deployments)"
+
+  production:
+    description: "Production environment (glycogrit.com)"
