@@ -37,6 +37,9 @@ out
 .env.production.local
 .env.backup
 
+# Doppler CLI (local tokens - NEVER commit!)
+.doppler.*.yaml
+
 # ============================================
 # SECURITY: Secrets and credentials
 # ============================================

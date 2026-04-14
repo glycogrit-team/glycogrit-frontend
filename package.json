@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:doppler": "doppler run -- vite",
     "build": "vite build",
+    "build:doppler": "doppler run -- vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "doppler:setup": "doppler setup",
+    "doppler:secrets": "doppler secrets",
+    "doppler:open": "doppler open"
   },
   "dependencies": {
     "react": "^18.2.0",
