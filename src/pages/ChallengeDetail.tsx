@@ -5,27 +5,15 @@ import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import Card from '../components/common/Card';
 import { challenges } from '../constants/challenges';
+import { ChallengeConfig, RouteConfig } from '../lib/config';
 
 export default function ChallengeDetail() {
   const { id } = useParams<{ id: string }>();
   const challenge = challenges.find((c) => c.id === id);
 
   if (!challenge) {
-    return <Navigate to="/challenges" replace />;
+    return <Navigate to={RouteConfig.ROUTES.CHALLENGES} replace />;
   }
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'beginner':
-        return 'success';
-      case 'intermediate':
-        return 'warning';
-      case 'advanced':
-        return 'info';
-      default:
-        return 'default';
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -42,11 +30,11 @@ export default function ChallengeDetail() {
         <div className="absolute inset-0 flex items-end">
           <div className="container-custom pb-12">
             <div className="flex items-center gap-3 mb-4">
-              <Badge variant={getDifficultyColor(challenge.difficulty)}>
-                {challenge.difficulty}
+              <Badge variant={ChallengeConfig.getDifficultyColor(challenge.difficulty)}>
+                {ChallengeConfig.getDifficultyDisplayName(challenge.difficulty)}
               </Badge>
-              <span className="text-white capitalize bg-black/30 px-3 py-1 rounded-full text-sm">
-                {challenge.category}
+              <span className="text-white bg-black/30 px-3 py-1 rounded-full text-sm">
+                {ChallengeConfig.getCategoryDisplayName(challenge.category)}
               </span>
             </div>
             <h1 className="text-5xl font-bold text-white mb-4">{challenge.title}</h1>
@@ -205,7 +193,7 @@ export default function ChallengeDetail() {
 
               {/* Back Link */}
               <Link
-                to="/challenges"
+                to={RouteConfig.ROUTES.CHALLENGES}
                 className="flex items-center text-primary-600 hover:text-primary-700 font-medium"
               >
                 <svg
