@@ -310,15 +310,8 @@ glycogrit-frontend/
 │   ├── App.tsx                  # Root component
 │   ├── main.tsx                 # Application entry point
 │   └── index.css                # Global styles
-├── wiki/                        # Technical documentation
-│   ├── README.md                # Documentation index
-│   ├── 01-Coding-Standards.md
-│   ├── 02-Project-Structure.md
-│   ├── 04-Security-Best-Practices.md
-│   ├── 05-Design-Patterns.md
-│   ├── 06-Component-Guidelines.md
-│   ├── 07-State-Management.md
-│   └── 08-Styling-Guide.md
+# Technical documentation now on GitHub Wiki
+# https://github.com/glycogrit-team/glycogrit-frontend/wiki
 ├── .env.example                 # Environment variables template
 ├── .gitignore                   # Git ignore patterns
 ├── ARCHITECTURE.md              # This file
@@ -748,13 +741,14 @@ Vercel Edge CDN
 
 ## References
 
-### Internal Documentation
-- [Coding Standards](./wiki/01-Coding-Standards.md) - TypeScript and React conventions
-- [Project Structure](./wiki/02-Project-Structure.md) - Folder organization
-- [Security Best Practices](./wiki/04-Security-Best-Practices.md) - Security guidelines
-- [Design Patterns](./wiki/05-Design-Patterns.md) - Architecture patterns
-- [Component Guidelines](./wiki/06-Component-Guidelines.md) - Component best practices
-- [State Management](./wiki/07-State-Management.md) - State patterns
+### Internal Documentation (GitHub Wiki)
+- [Coding Standards](https://github.com/glycogrit-team/glycogrit-frontend/wiki/01-Coding-Standards) - TypeScript and React conventions
+- [Project Structure](https://github.com/glycogrit-team/glycogrit-frontend/wiki/02-Project-Structure) - Folder organization
+- [Security Best Practices](https://github.com/glycogrit-team/glycogrit-frontend/wiki/04-Security-Best-Practices) - Security guidelines
+- [Design Patterns](https://github.com/glycogrit-team/glycogrit-frontend/wiki/05-Design-Patterns) - Architecture patterns
+- [Component Guidelines](https://github.com/glycogrit-team/glycogrit-frontend/wiki/06-Component-Guidelines) - Component best practices
+- [State Management](https://github.com/glycogrit-team/glycogrit-frontend/wiki/07-State-Management) - State patterns
+- [**View All Wiki Pages**](https://github.com/glycogrit-team/glycogrit-frontend/wiki)
 
 ### External Resources
 - [React Documentation](https://react.dev/)

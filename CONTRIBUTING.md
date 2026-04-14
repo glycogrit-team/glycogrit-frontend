@@ -146,7 +146,7 @@ git push origin your-branch
 
 ## Coding Standards
 
-We follow strict coding standards inspired by the NOVA project. Full details are in [wiki/01-Coding-Standards.md](wiki/01-Coding-Standards.md).
+We follow strict coding standards inspired by the NOVA project. Full details are in the [Coding Standards Wiki](https://github.com/glycogrit-team/glycogrit-frontend/wiki/01-Coding-Standards).
 
 ### Key Principles
 
@@ -482,8 +482,7 @@ Update documentation when you:
 
 | Type | Location |
 |------|----------|
-| **Technical docs** | `/wiki/*.md` (in-repository) |
-| **Process docs** | GitHub Wiki |
+| **All documentation** | [GitHub Wiki](https://github.com/glycogrit-team/glycogrit-frontend/wiki) |
 | **API docs** | JSDoc comments in code |
 | **Architecture** | `ARCHITECTURE.md` |
 | **Contributing** | This file |
@@ -509,7 +508,7 @@ Update documentation when you:
 
 ### Resources
 
-- **Wiki**: [In-repo documentation](wiki/README.md)
+- **Wiki**: [GitHub Wiki](https://github.com/glycogrit-team/glycogrit-frontend/wiki)
 - **GitHub Wiki**: [Process documentation](https://github.com/glycogrit-team/glycogrit-frontend/wiki)
 - **Issues**: [Report bugs or request features](https://github.com/glycogrit-team/glycogrit-frontend/issues)
 - **Discussions**: [Ask questions](https://github.com/glycogrit-team/glycogrit-frontend/discussions)
