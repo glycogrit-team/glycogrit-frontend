@@ -45,6 +45,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/privacy-policy" className="hover:text-primary-400 transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
                 <a href="#about" className="hover:text-primary-400 transition-colors">
                   About Us
                 </a>
@@ -118,6 +123,11 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
           <p>&copy; {new Date().getFullYear()} GlycoGrit. All rights reserved.</p>
+          <p className="mt-2">
+            <Link to="/privacy-policy" className="hover:text-primary-400 transition-colors">
+              Privacy Policy
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

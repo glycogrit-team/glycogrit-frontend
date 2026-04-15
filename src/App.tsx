@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Challenges from './pages/Challenges'
 import ChallengeDetail from './pages/ChallengeDetail'
 import Gallery from './pages/Gallery'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import WhatsAppButton from './components/common/WhatsAppButton'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/challenges/:id" element={<ChallengeDetail />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
         <WhatsAppButton />
       </div>
