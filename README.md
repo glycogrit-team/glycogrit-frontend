@@ -46,6 +46,24 @@ The application will open at [http://localhost:5173](http://localhost:5173)
 - `npm run preview` - Preview the production build locally
 - `npm run lint` - Run ESLint to check code quality
 
+## Instagram Integration
+
+The Gallery page displays Instagram photos from the @glycogrit account using Instagram Graph API.
+
+### Token Maintenance
+
+The Instagram access token is a long-lived token that **expires every 60 days**.
+
+**⚠️ IMPORTANT**: Set a calendar reminder to refresh the token before expiry!
+
+See [INSTAGRAM_TOKEN_MAINTENANCE.md](./INSTAGRAM_TOKEN_MAINTENANCE.md) for:
+- Current token expiry date
+- How to refresh the token
+- Token refresh history
+- Troubleshooting guide
+
+For initial setup, see [INSTAGRAM_TOKEN_GUIDE.md](./INSTAGRAM_TOKEN_GUIDE.md).
+
 ## Project Structure
 
 ```
