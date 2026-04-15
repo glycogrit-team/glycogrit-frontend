@@ -123,9 +123,17 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
           <p>&copy; {new Date().getFullYear()} GlycoGrit. All rights reserved.</p>
-          <p className="mt-2">
+          <p className="mt-2 space-x-4">
             <Link to="/privacy-policy" className="hover:text-primary-400 transition-colors">
               Privacy Policy
+            </Link>
+            <span className="text-gray-600">•</span>
+            <Link to="/terms-of-service" className="hover:text-primary-400 transition-colors">
+              Terms of Service
+            </Link>
+            <span className="text-gray-600">•</span>
+            <Link to="/data-deletion" className="hover:text-primary-400 transition-colors">
+              Data Deletion
             </Link>
           </p>
         </div>
