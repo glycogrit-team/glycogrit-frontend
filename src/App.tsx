@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Challenges from './pages/Challenges'
 import ChallengeDetail from './pages/ChallengeDetail'
+import Gallery from './pages/Gallery'
+import WhatsAppButton from './components/common/WhatsAppButton'
 
 function App() {
   return (
@@ -11,7 +13,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/challenges/:id" element={<ChallengeDetail />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
+        <WhatsAppButton />
       </div>
     </Router>
   )

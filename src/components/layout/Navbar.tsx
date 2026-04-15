@@ -17,11 +17,11 @@ export default function Navbar() {
             <Link to="/challenges" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
               Challenges
             </Link>
+            <Link to="/gallery" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+              Gallery
+            </Link>
             <a href="#about" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
               About
-            </a>
-            <a href="#how-it-works" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
-              How It Works
             </a>
           </div>
 
