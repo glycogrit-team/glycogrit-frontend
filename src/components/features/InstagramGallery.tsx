@@ -9,31 +9,20 @@ export default function InstagramGallery() {
 
   useEffect(() => {
     const loadMedia = async () => {
-      console.log('[Gallery] Component mounted, loading Instagram media...')
-      console.log('[Gallery] Environment:', import.meta.env.MODE)
-      console.log('[Gallery] All env keys:', Object.keys(import.meta.env))
-
       const accessToken = import.meta.env.VITE_INSTAGRAM_ACCESS_TOKEN
 
-      console.log('[Gallery] Token from env exists:', !!accessToken)
-      console.log('[Gallery] Token from env length:', accessToken?.length || 0)
-
       if (!accessToken) {
-        console.error('[Gallery] No access token found in environment variables!')
-        console.error('[Gallery] Available env vars:', Object.keys(import.meta.env).filter(k => k.startsWith('VITE_')))
         setError('Instagram access token not configured')
         setLoading(false)
         return
       }
 
       try {
-        console.log('[Gallery] Calling fetchInstagramMedia...')
         const posts = await fetchInstagramMedia(accessToken, 12)
-        console.log('[Gallery] Received posts:', posts.length)
         setMedia(posts)
       } catch (err) {
-        console.error('[Gallery] Error loading media:', err)
         setError('Failed to load Instagram photos')
+        console.error(err)
       } finally {
         setLoading(false)
       }
