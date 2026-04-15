@@ -1,0 +1,180 @@
+DATA DELETION INSTRUCTIONS - GLYCOGRIT
+
+Last Updated: April 15, 2026
+
+═══════════════════════════════════════════════════════════════════════
+
+YOUR RIGHT TO DATA DELETION
+
+At GlycoGrit, we respect your privacy and your right to control your personal data. You have the right to request the deletion of your personal information that we have collected and stored.
+
+This document explains how you can request the deletion of your data from our systems, including data collected through our website and any integrations with third-party platforms like Instagram.
+
+═══════════════════════════════════════════════════════════════════════
+
+WHAT DATA WE COLLECT
+
+We may collect and store the following types of data:
+
+• Account Information: Name, email address, profile information
+• Activity Data: Cycling activities, challenge participation, progress tracking
+• Social Media Data: Public Instagram content displayed on our Gallery page
+• Communication Data: Messages, support inquiries, community interactions
+• Technical Data: IP address, browser type, device information, cookies
+• Payment Information: Transaction history (payment details are processed by third-party processors)
+
+═══════════════════════════════════════════════════════════════════════
+
+HOW TO REQUEST DATA DELETION
+
+You can request deletion of your data through any of the following methods:
+
+METHOD 1: EMAIL REQUEST
+━━━━━━━━━━━━━━━━━━━━━━━━━
+Send an email to: privacy@glycogrit.com
+
+Include in your email:
+• Subject line: "Data Deletion Request"
+• Your full name
+• Email address associated with your account
+• Username (if applicable)
+• Specific data you want deleted (or request complete deletion)
+
+METHOD 2: WHATSAPP
+━━━━━━━━━━━━━━━━━━━━━━━━━
+Contact us via WhatsApp: +91 98765 43210
+
+Send a message with your data deletion request including your account details and the specific information you'd like deleted.
+
+METHOD 3: ACCOUNT SETTINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━
+If you have an account, you can:
+1. Log in to your GlycoGrit account
+2. Go to Account Settings
+3. Select "Privacy & Data"
+4. Click "Request Data Deletion"
+5. Follow the confirmation prompts
+
+═══════════════════════════════════════════════════════════════════════
+
+DATA DELETION PROCESS TIMELINE
+
+STEP 1: REQUEST RECEIVED (24-48 hours)
+We will acknowledge receipt of your data deletion request within 24-48 hours.
+
+STEP 2: IDENTITY VERIFICATION (1-2 business days)
+For security purposes, we may need to verify your identity before processing the deletion. This typically takes 1-2 business days.
+
+STEP 3: DATA DELETION (Up to 30 days)
+Once verified, we will process your request and delete your data within 30 days. You will receive a confirmation email once the deletion is complete.
+
+═══════════════════════════════════════════════════════════════════════
+
+WHAT HAPPENS WHEN YOU DELETE YOUR DATA
+
+When you request data deletion:
+
+• Your account will be permanently deactivated
+• Your personal information will be removed from our active databases
+• Your activity history and challenge participation data will be deleted
+• Any content you posted (photos, comments) will be removed
+• You will no longer receive communications from us
+• You will need to create a new account if you wish to use our services again
+
+═══════════════════════════════════════════════════════════════════════
+
+DATA WE MAY RETAIN
+
+In some cases, we may need to retain certain data for legal, security, or operational reasons:
+
+• Legal Obligations: Data required by law or for legal proceedings
+• Transaction Records: Payment and transaction history for accounting purposes
+• Security: Data needed to prevent fraud or abuse
+• Backup Systems: Data in backup systems will be deleted in accordance with our data retention schedule (typically within 90 days)
+
+Any retained data will be kept secure and used only for the purposes specified above.
+
+═══════════════════════════════════════════════════════════════════════
+
+INSTAGRAM AND THIRD-PARTY DATA
+
+If you've connected your Instagram account or other third-party services:
+
+• We will remove the connection between your GlycoGrit account and your Instagram account
+• Public Instagram content displayed on our Gallery page is sourced from our official @glycogrit account, not individual user accounts
+• To delete data from Instagram itself, you must do so through Instagram's platform
+• To delete data from other third-party services, please contact those services directly
+
+For Instagram-specific data deletion, visit:
+https://help.instagram.com/contact/186020218683230
+
+═══════════════════════════════════════════════════════════════════════
+
+PARTIAL DATA DELETION
+
+If you don't want to delete all your data, you can request deletion of specific types of information:
+
+• Activity history only
+• Profile information
+• Communication history
+• Specific posts or content
+
+Please specify in your deletion request which data you want removed.
+
+═══════════════════════════════════════════════════════════════════════
+
+FREQUENTLY ASKED QUESTIONS
+
+Q: How long does the deletion process take?
+A: The entire process typically takes up to 30 days from the time we verify your identity. You will receive a confirmation email once the deletion is complete.
+
+Q: Can I recover my data after deletion?
+A: No, data deletion is permanent. Once your data is deleted, it cannot be recovered. Please ensure you have downloaded any information you want to keep before requesting deletion.
+
+Q: Will deleting my data affect my challenge results?
+A: Yes, deleting your account and data will remove your challenge participation history and results. This action cannot be undone.
+
+Q: What about data shared with third parties?
+A: We will notify any third-party service providers to delete your data from their systems as well. However, you may need to contact them directly to ensure complete deletion.
+
+Q: Do I need to delete my account to delete my data?
+A: Complete data deletion requires account closure. However, you can request partial data deletion while keeping your account active.
+
+═══════════════════════════════════════════════════════════════════════
+
+CONTACT US
+
+If you have questions about data deletion or need assistance with your request:
+
+GlycoGrit Data Privacy Team
+Email: privacy@glycogrit.com
+WhatsApp: +91 98765 43210
+Website: https://www.glycogrit.com
+
+For general privacy inquiries, please see our Privacy Policy at:
+https://www.glycogrit.com/privacy-policy
+
+═══════════════════════════════════════════════════════════════════════
+
+IMPORTANT NOTICE
+
+Before requesting data deletion, please consider:
+
+⚠ Data deletion is permanent and cannot be reversed
+⚠ You will lose access to your account and all associated data
+⚠ Any active challenge registrations or memberships will be cancelled
+⚠ You may want to download your data before deletion
+
+═══════════════════════════════════════════════════════════════════════
+
+This data deletion policy was last updated on April 15, 2026. We reserve the right to update these procedures to comply with applicable laws and regulations.
+
+═══════════════════════════════════════════════════════════════════════
+
+GLYCOGRIT
+Building India's Premier Cycling Community
+
+Website: https://www.glycogrit.com
+Instagram: @glycogrit
+Email: privacy@glycogrit.com
+WhatsApp: +91 98765 43210

@@ -38,6 +38,8 @@ export async function fetchInstagramMedia(
     const response = await fetch(url)
 
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Instagram API error:', errorText)
       throw new Error(`Instagram API error: ${response.status}`)
     }
 

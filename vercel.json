@@ -59,22 +59,7 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/privacy-policy",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/terms-of-service",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/data-deletion",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [
     {
