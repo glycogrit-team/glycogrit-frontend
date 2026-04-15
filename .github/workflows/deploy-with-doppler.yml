@@ -44,42 +44,42 @@ jobs:
             npm run build
           fi
 
-      - name: Check Vercel Token
+      - name: Check Vercel Configuration
         id: check_vercel
         run: |
           if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "has_token=false" >> $GITHUB_OUTPUT
+            echo "has_vercel=false" >> $GITHUB_OUTPUT
           else
-            echo "has_token=true" >> $GITHUB_OUTPUT
+            echo "has_vercel=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Deploy to Vercel (Production)
-        if: steps.check_vercel.outputs.has_token == 'true' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        if: steps.check_vercel.outputs.has_vercel == 'true' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
         run: |
           npm install -g vercel
           vercel deploy --prod --token=$VERCEL_TOKEN
 
       - name: Deploy to Vercel (Preview)
-        if: steps.check_vercel.outputs.has_token == 'true' && github.event_name == 'pull_request'
+        if: steps.check_vercel.outputs.has_vercel == 'true' && github.event_name == 'pull_request'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
         run: |
           npm install -g vercel
           vercel deploy --token=$VERCEL_TOKEN
 
-      - name: Build Complete
-        if: steps.check_vercel.outputs.has_token == 'false'
+      - name: Build Complete (No Vercel)
+        if: steps.check_vercel.outputs.has_vercel == 'false'
         run: |
           echo "⏭️  Skipping Vercel deployment (VERCEL_TOKEN not configured)"
           echo "✅ Build completed successfully with Doppler secrets"
           echo ""
           echo "To enable auto-deployment:"
-          echo "1. Add VERCEL_TOKEN to GitHub Secrets"
-          echo "2. Add VERCEL_ORG_ID to GitHub Secrets"
-          echo "3. Add VERCEL_PROJECT_ID to GitHub Secrets"
+          echo "1. Add VERCEL_TOKEN to GitHub Secrets (account-level, shared)"
+          echo "2. Add VERCEL_ORG_ID to GitHub Secrets (account-level, shared)"
+          echo "3. Add VERCEL_PROJECT_ID_FRONTEND to GitHub Secrets (project-specific)"
