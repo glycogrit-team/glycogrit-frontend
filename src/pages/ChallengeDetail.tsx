@@ -4,14 +4,29 @@ import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import Card from '../components/common/Card';
-import { challenges } from '../constants/challenges';
+import { useChallenge } from '../hooks/useChallenges';
 import { ChallengeConfig, RouteConfig } from '../lib/config';
 
 export default function ChallengeDetail() {
   const { id } = useParams<{ id: string }>();
-  const challenge = challenges.find((c) => c.id === id);
+  const { challenge, loading, error } = useChallenge(id);
 
-  if (!challenge) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <p className="mt-4 text-gray-600">Loading challenge...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !challenge) {
     return <Navigate to={RouteConfig.ROUTES.CHALLENGES} replace />;
   }
 

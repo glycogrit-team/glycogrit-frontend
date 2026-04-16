@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import ChallengeCard from '../components/features/ChallengeCard';
-import { challenges } from '../constants/challenges';
+import { useChallenges } from '../hooks/useChallenges';
 import { ChallengeCategory, DifficultyLevel } from '../types/challenge';
 import { ChallengeConfig } from '../lib/config';
 
@@ -10,11 +10,14 @@ export default function Challenges() {
   const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory | 'all'>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'all'>('all');
 
-  const filteredChallenges = challenges.filter((challenge) => {
-    const categoryMatch = selectedCategory === 'all' || challenge.category === selectedCategory;
-    const difficultyMatch = selectedDifficulty === 'all' || challenge.difficulty === selectedDifficulty;
-    return categoryMatch && difficultyMatch;
+  // Fetch challenges from backend with filters
+  const { challenges, loading, error } = useChallenges({
+    category: selectedCategory === 'all' ? undefined : selectedCategory,
+    difficulty: selectedDifficulty === 'all' ? undefined : selectedDifficulty,
+    limit: 100, // Fetch all challenges for filtering
   });
+
+  const filteredChallenges = challenges;
 
   const categories: Array<ChallengeCategory | 'all'> = ['all', ...ChallengeConfig.CATEGORIES];
   const difficulties: Array<DifficultyLevel | 'all'> = ['all', ...ChallengeConfig.DIFFICULTY_LEVELS];
@@ -83,23 +86,15 @@ export default function Challenges() {
       {/* Challenges Grid */}
       <section className="py-12 bg-gray-50 flex-1">
         <div className="container-custom">
-          <div className="mb-6">
-            <p className="text-gray-600">
-              Showing <span className="font-semibold text-gray-900">{filteredChallenges.length}</span>{' '}
-              {filteredChallenges.length === 1 ? 'challenge' : 'challenges'}
-            </p>
-          </div>
-
-          {filteredChallenges.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredChallenges.map((challenge) => (
-                <ChallengeCard key={challenge.id} challenge={challenge} />
-              ))}
+          {loading ? (
+            <div className="text-center py-16">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+              <p className="mt-4 text-gray-600">Loading challenges...</p>
             </div>
-          ) : (
+          ) : error ? (
             <div className="text-center py-16">
               <svg
-                className="mx-auto h-24 w-24 text-gray-400"
+                className="mx-auto h-24 w-24 text-red-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -108,12 +103,47 @@ export default function Challenges() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <h3 className="mt-4 text-xl font-medium text-gray-900">No challenges found</h3>
-              <p className="mt-2 text-gray-500">Try adjusting your filters to see more results.</p>
+              <h3 className="mt-4 text-xl font-medium text-gray-900">Error loading challenges</h3>
+              <p className="mt-2 text-red-600">{error}</p>
             </div>
+          ) : (
+            <>
+              <div className="mb-6">
+                <p className="text-gray-600">
+                  Showing <span className="font-semibold text-gray-900">{filteredChallenges.length}</span>{' '}
+                  {filteredChallenges.length === 1 ? 'challenge' : 'challenges'}
+                </p>
+              </div>
+
+              {filteredChallenges.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredChallenges.map((challenge) => (
+                    <ChallengeCard key={challenge.id} challenge={challenge} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  <svg
+                    className="mx-auto h-24 w-24 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <h3 className="mt-4 text-xl font-medium text-gray-900">No challenges found</h3>
+                  <p className="mt-2 text-gray-500">Try adjusting your filters to see more results.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
