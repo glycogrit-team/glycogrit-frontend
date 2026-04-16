@@ -12,6 +12,7 @@ interface UseChallengesOptions {
   difficulty?: string;
   limit?: number;
   page?: number;
+  is_featured?: boolean;
   autoFetch?: boolean;
 }
 
@@ -26,7 +27,7 @@ interface UseChallengesReturn {
  * Hook to fetch and manage challenges list
  */
 export function useChallenges(options: UseChallengesOptions = {}): UseChallengesReturn {
-  const { category, difficulty, limit, page, autoFetch = true } = options;
+  const { category, difficulty, limit, page, is_featured, autoFetch = true } = options;
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState<boolean>(autoFetch);
   const [error, setError] = useState<string | null>(null);
@@ -41,12 +42,13 @@ export function useChallenges(options: UseChallengesOptions = {}): UseChallenges
         difficulty,
         limit,
         page,
+        is_featured,
       });
       setChallenges(data);
     } catch (err) {
       const errorMessage = getUserFriendlyMessage(err);
       setError(errorMessage);
-      logError(err, { category, difficulty, limit, page });
+      logError(err, { category, difficulty, limit, page, is_featured });
     } finally {
       setLoading(false);
     }
@@ -56,7 +58,7 @@ export function useChallenges(options: UseChallengesOptions = {}): UseChallenges
     if (autoFetch) {
       fetchChallenges();
     }
-  }, [category, difficulty, limit, page, autoFetch]);
+  }, [category, difficulty, limit, page, is_featured, autoFetch]);
 
   return {
     challenges,

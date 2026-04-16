@@ -7,7 +7,7 @@ import ChallengeCard from '../components/features/ChallengeCard';
 import { useChallenges } from '../hooks/useChallenges';
 
 export default function Home() {
-  const { challenges: featuredChallenges, loading, error } = useChallenges({ limit: 3 });
+  const { challenges: featuredChallenges, loading, error } = useChallenges({ is_featured: true, limit: 10 });
 
   return (
     <div className="min-h-screen flex flex-col">

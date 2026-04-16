@@ -170,6 +170,7 @@ export class GlycogritAPIClient {
     difficulty?: string;
     page?: number;
     limit?: number;
+    is_featured?: boolean;
   }): Promise<Challenge[]> {
     const searchParams = new URLSearchParams();
 
@@ -184,6 +185,9 @@ export class GlycogritAPIClient {
     }
     if (params?.limit) {
       searchParams.append('limit', AppConfig.validatePageSize(params.limit).toString());
+    }
+    if (params?.is_featured !== undefined) {
+      searchParams.append('is_featured', params.is_featured.toString());
     }
 
     const queryString = searchParams.toString();

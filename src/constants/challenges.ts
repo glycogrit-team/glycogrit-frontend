@@ -1,5 +1,32 @@
 import { Challenge } from '../types/challenge';
 
+/**
+ * IMPORTANT: This file contains fallback/example data ONLY
+ *
+ * The application now fetches real data from the backend API (PostgreSQL database).
+ * See: /app/api/events.py for backend endpoints
+ * See: src/hooks/useChallenges.ts for frontend data fetching
+ *
+ * The database contains real events including:
+ * - Bangalore Marathon 2026
+ * - Mumbai 10K Run 2026
+ * - Delhi Half Marathon 2026
+ * - Chennai 5K Fun Run 2026
+ * - Virtual India Run 2026
+ * - 30-Day Running Challenge
+ * - Cycling Distance Challenge 500km
+ * - 10,000 Steps Daily Challenge
+ * - Advanced Marathon Prep
+ * - Strength & Cardio Fusion Challenge
+ *
+ * This hardcoded data is kept for:
+ * 1. Reference/documentation purposes
+ * 2. TypeScript type checking
+ * 3. Fallback during development (if backend is down)
+ *
+ * DO NOT USE this data in production - always fetch from the API!
+ */
+
 export const challenges: Challenge[] = [
   {
     id: '1',
