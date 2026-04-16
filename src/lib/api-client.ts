@@ -24,10 +24,63 @@ export interface PaginatedResponse<T> {
 export class GlycogritAPIClient {
   private baseUrl: string;
   private timeout: number;
+  private authToken: string | null = null;
 
   constructor() {
     this.baseUrl = AppConfig.API_BASE_URL;
     this.timeout = AppConfig.API_TIMEOUT;
+  }
+
+  /**
+   * Set authentication token
+   */
+  setAuthToken(token: string | null) {
+    this.authToken = token;
+  }
+
+  /**
+   * Get authentication token
+   */
+  getAuthToken(): string | null {
+    return this.authToken;
+  }
+
+  /**
+   * Transform backend Event to frontend Challenge
+   */
+  private transformEventToChallenge(event: any): Challenge {
+    return {
+      id: event.id.toString(),
+      title: event.name,
+      description: event.description,
+      longDescription: event.description, // Backend doesn't have separate longDescription
+      duration: this.calculateDuration(event.start_date, event.end_date),
+      difficulty: (event.difficulty_level || 'beginner') as Challenge['difficulty'],
+      category: (event.event_type || 'mixed') as Challenge['category'],
+      participants: event.current_participants || 0,
+      startDate: event.start_date || event.created_at,
+      endDate: event.end_date || event.created_at,
+      imageUrl: event.banner_image_url || '/images/default-challenge.jpg',
+      goals: event.goals || [],
+      rules: event.rules ? event.rules.split('\n').filter((r: string) => r.trim()) : [],
+      rewards: event.rewards || [],
+    };
+  }
+
+  /**
+   * Calculate duration string from dates
+   */
+  private calculateDuration(startDate: string | null, endDate: string | null): string {
+    if (!startDate || !endDate) return '30 days';
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return '1 day';
+    if (diffDays === 1) return '1 day';
+    return `${diffDays} days`;
   }
 
   /**
@@ -40,14 +93,21 @@ export class GlycogritAPIClient {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...options.headers as Record<string, string>,
+    };
+
+    // Add auth token if available
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+    }
+
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         ...options,
         signal: controller.signal,
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
+        headers,
       });
 
       clearTimeout(timeoutId);
@@ -103,7 +163,7 @@ export class GlycogritAPIClient {
   }
 
   /**
-   * Get all challenges
+   * Get all challenges (maps to backend /api/v1/events)
    */
   async getChallenges(params?: {
     category?: string;
@@ -127,101 +187,147 @@ export class GlycogritAPIClient {
     }
 
     const queryString = searchParams.toString();
-    const endpoint = `/api/challenges${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/events${queryString ? `?${queryString}` : ''}`;
 
-    const response = await this.fetch<Challenge[]>(endpoint);
-    return response.data;
+    const response = await this.fetch<{ events: any[]; total: number; page: number; page_size: number }>(endpoint);
+
+    // Transform backend Event to frontend Challenge format
+    return response.data.events.map((event) => this.transformEventToChallenge(event));
   }
 
   /**
-   * Get challenge by ID
+   * Get challenge by ID (maps to backend /api/v1/events/:id)
    */
   async getChallengeById(id: string): Promise<Challenge> {
     if (!id) {
       throw new ValidationError('Challenge ID is required', { id });
     }
 
-    const response = await this.fetch<Challenge>(`/api/challenges/${id}`);
-    return response.data;
+    const response = await this.fetch<any>(`/api/v1/events/${id}`);
+    return this.transformEventToChallenge(response.data);
   }
 
   /**
-   * Join a challenge
+   * Join a challenge (maps to backend /api/v1/events/:id/register) - requires authentication
    */
-  async joinChallenge(challengeId: string, userId: string): Promise<void> {
-    if (!challengeId || !userId) {
-      throw new ValidationError('Challenge ID and User ID are required', {
-        challengeId,
-        userId,
-      });
+  async joinChallenge(challengeId: string): Promise<void> {
+    if (!challengeId) {
+      throw new ValidationError('Challenge ID is required', { challengeId });
     }
 
-    await this.fetch(`/api/challenges/${challengeId}/join`, {
+    await this.fetch(`/api/v1/events/${challengeId}/register`, {
       method: 'POST',
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({}),
     });
   }
 
   /**
-   * Leave a challenge
+   * Leave a challenge (maps to backend DELETE /api/v1/registrations/:id) - requires authentication
+   * Note: This requires the registration ID, not the challenge ID
    */
-  async leaveChallenge(challengeId: string, userId: string): Promise<void> {
-    if (!challengeId || !userId) {
-      throw new ValidationError('Challenge ID and User ID are required', {
-        challengeId,
-        userId,
-      });
+  async leaveChallenge(registrationId: string): Promise<void> {
+    if (!registrationId) {
+      throw new ValidationError('Registration ID is required', { registrationId });
     }
 
-    await this.fetch(`/api/challenges/${challengeId}/leave`, {
-      method: 'POST',
-      body: JSON.stringify({ userId }),
+    await this.fetch(`/api/v1/registrations/${registrationId}`, {
+      method: 'DELETE',
     });
   }
 
   /**
-   * Get user's joined challenges
+   * Get user's joined challenges (maps to backend /api/v1/events/users/:id/events) - requires authentication
    */
   async getUserChallenges(userId: string): Promise<Challenge[]> {
     if (!userId) {
       throw new ValidationError('User ID is required', { userId });
     }
 
-    const response = await this.fetch<Challenge[]>(`/api/users/${userId}/challenges`);
+    const response = await this.fetch<{ events: any[]; total: number }>(
+      `/api/v1/events/users/${userId}/events`
+    );
+    return response.data.events.map((event) => this.transformEventToChallenge(event));
+  }
+
+  /**
+   * Submit challenge activity (maps to backend /api/v1/events/:id/activities) - requires authentication
+   */
+  async submitActivity(
+    challengeId: string,
+    activity: {
+      distance?: number;
+      duration?: number;
+      activity_date: string;
+      notes?: string;
+    }
+  ): Promise<void> {
+    if (!challengeId) {
+      throw new ValidationError('Challenge ID is required', { challengeId });
+    }
+
+    if (!activity.activity_date) {
+      throw new ValidationError('Activity date is required', { activity });
+    }
+
+    await this.fetch(`/api/v1/events/${challengeId}/activities`, {
+      method: 'POST',
+      body: JSON.stringify(activity),
+    });
+  }
+
+  /**
+   * User registration
+   */
+  async register(userData: {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    city?: string;
+    state?: string;
+  }): Promise<{ access_token: string; token_type: string }> {
+    const response = await this.fetch<{ access_token: string; token_type: string }>(
+      '/api/v1/auth/register',
+      {
+        method: 'POST',
+        body: JSON.stringify(userData),
+      }
+    );
     return response.data;
   }
 
   /**
-   * Submit challenge activity
+   * User login
    */
-  async submitActivity(
-    challengeId: string,
-    userId: string,
-    activity: {
-      distance?: number;
-      duration?: number;
-      date: string;
-      notes?: string;
-    }
-  ): Promise<void> {
-    if (!challengeId || !userId) {
-      throw new ValidationError('Challenge ID and User ID are required', {
-        challengeId,
-        userId,
-      });
-    }
+  async login(credentials: {
+    email: string;
+    password: string;
+  }): Promise<{ access_token: string; token_type: string }> {
+    const response = await this.fetch<{ access_token: string; token_type: string }>(
+      '/api/v1/auth/login',
+      {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+      }
+    );
+    return response.data;
+  }
 
-    if (!activity.date) {
-      throw new ValidationError('Activity date is required', { activity });
-    }
-
-    await this.fetch(`/api/challenges/${challengeId}/activities`, {
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-        ...activity,
-      }),
-    });
+  /**
+   * Get current user (requires authentication)
+   */
+  async getCurrentUser(): Promise<{
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    city?: string;
+    state?: string;
+    is_active: boolean;
+    email_verified: boolean;
+  }> {
+    const response = await this.fetch<any>('/api/v1/auth/me');
+    return response.data;
   }
 }
 

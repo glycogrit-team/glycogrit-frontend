@@ -4,10 +4,10 @@ import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import ChallengeCard from '../components/features/ChallengeCard';
-import { challenges } from '../constants/challenges';
+import { useChallenges } from '../hooks/useChallenges';
 
 export default function Home() {
-  const featuredChallenges = challenges.slice(0, 3);
+  const { challenges: featuredChallenges, loading, error } = useChallenges({ limit: 3 });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -45,19 +45,35 @@ export default function Home() {
             <p className="text-xl text-gray-600">Start your journey with our most popular challenges</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredChallenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Loading challenges...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{error}</p>
+            </div>
+          ) : featuredChallenges.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No challenges available yet.</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {featuredChallenges.map((challenge) => (
+                  <ChallengeCard key={challenge.id} challenge={challenge} />
+                ))}
+              </div>
 
-          <div className="text-center mt-12">
-            <Link to="/challenges">
-              <Button size="lg">
-                View All Challenges
-              </Button>
-            </Link>
-          </div>
+              <div className="text-center mt-12">
+                <Link to="/challenges">
+                  <Button size="lg">
+                    View All Challenges
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

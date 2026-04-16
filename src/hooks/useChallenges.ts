@@ -10,6 +10,8 @@ import { APIError, getUserFriendlyMessage, logError } from '../lib/errors';
 interface UseChallengesOptions {
   category?: string;
   difficulty?: string;
+  limit?: number;
+  page?: number;
   autoFetch?: boolean;
 }
 
@@ -24,7 +26,7 @@ interface UseChallengesReturn {
  * Hook to fetch and manage challenges list
  */
 export function useChallenges(options: UseChallengesOptions = {}): UseChallengesReturn {
-  const { category, difficulty, autoFetch = true } = options;
+  const { category, difficulty, limit, page, autoFetch = true } = options;
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState<boolean>(autoFetch);
   const [error, setError] = useState<string | null>(null);
@@ -37,12 +39,14 @@ export function useChallenges(options: UseChallengesOptions = {}): UseChallenges
       const data = await apiClient.getChallenges({
         category,
         difficulty,
+        limit,
+        page,
       });
       setChallenges(data);
     } catch (err) {
       const errorMessage = getUserFriendlyMessage(err);
       setError(errorMessage);
-      logError(err, { category, difficulty });
+      logError(err, { category, difficulty, limit, page });
     } finally {
       setLoading(false);
     }
@@ -52,7 +56,7 @@ export function useChallenges(options: UseChallengesOptions = {}): UseChallenges
     if (autoFetch) {
       fetchChallenges();
     }
-  }, [category, difficulty, autoFetch]);
+  }, [category, difficulty, limit, page, autoFetch]);
 
   return {
     challenges,
@@ -116,12 +120,13 @@ interface UseChallengeActionsReturn {
   leaving: boolean;
   joinError: string | null;
   leaveError: string | null;
-  joinChallenge: (challengeId: string, userId: string) => Promise<boolean>;
-  leaveChallenge: (challengeId: string, userId: string) => Promise<boolean>;
+  joinChallenge: (challengeId: string) => Promise<boolean>;
+  leaveChallenge: (registrationId: string) => Promise<boolean>;
 }
 
 /**
  * Hook for challenge actions (join, leave)
+ * Note: These actions require authentication
  */
 export function useChallengeActions(): UseChallengeActionsReturn {
   const [joining, setJoining] = useState(false);
@@ -129,34 +134,34 @@ export function useChallengeActions(): UseChallengeActionsReturn {
   const [joinError, setJoinError] = useState<string | null>(null);
   const [leaveError, setLeaveError] = useState<string | null>(null);
 
-  const joinChallenge = async (challengeId: string, userId: string): Promise<boolean> => {
+  const joinChallenge = async (challengeId: string): Promise<boolean> => {
     setJoining(true);
     setJoinError(null);
 
     try {
-      await apiClient.joinChallenge(challengeId, userId);
+      await apiClient.joinChallenge(challengeId);
       return true;
     } catch (err) {
       const errorMessage = getUserFriendlyMessage(err);
       setJoinError(errorMessage);
-      logError(err, { challengeId, userId, action: 'join' });
+      logError(err, { challengeId, action: 'join' });
       return false;
     } finally {
       setJoining(false);
     }
   };
 
-  const leaveChallenge = async (challengeId: string, userId: string): Promise<boolean> => {
+  const leaveChallenge = async (registrationId: string): Promise<boolean> => {
     setLeaving(true);
     setLeaveError(null);
 
     try {
-      await apiClient.leaveChallenge(challengeId, userId);
+      await apiClient.leaveChallenge(registrationId);
       return true;
     } catch (err) {
       const errorMessage = getUserFriendlyMessage(err);
       setLeaveError(errorMessage);
-      logError(err, { challengeId, userId, action: 'leave' });
+      logError(err, { registrationId, action: 'leave' });
       return false;
     } finally {
       setLeaving(false);
