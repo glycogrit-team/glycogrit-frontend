@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply m-0 font-sans antialiased;
+    @apply m-0 font-sans antialiased bg-gray-50;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -24,12 +24,52 @@
   }
 
   p {
-    @apply text-gray-600;
+    @apply text-gray-600 leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 text-white;
+    @apply hover:from-primary-700 hover:to-secondary-700;
+    @apply transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-in-out;
+    @apply hover:shadow-elevation-3 hover:-translate-y-1;
+  }
+
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-md;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200;
+    @apply bg-[length:200%_100%];
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
   }
 }
 
 @layer utilities {
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .smooth-scroll {
+    scroll-behavior: smooth;
   }
 }
