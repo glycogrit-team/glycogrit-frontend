@@ -32,12 +32,34 @@ cd glycogrit-frontend
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment variables (Doppler):
+```bash
+# The project uses Doppler for secrets management
+# For local development, use the dev_personal config:
+doppler run --project glycogrit --config dev_personal -- npm run dev
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
 The application will open at [http://localhost:5173](http://localhost:5173)
+
+### Environment Configuration
+
+This project uses [Doppler](https://doppler.com) for environment variable management across all environments.
+
+**Configuration:**
+- **Project:** `glycogrit` (shared with backend)
+- **Local Dev:** `dev_personal` config
+- **Production:** `prd_backend` config (contains VITE_API_URL and other production secrets)
+
+**Why Doppler?**
+- Single source of truth for secrets
+- No `.env` files in production
+- Automatic secret injection in CI/CD
+- Shared configuration between frontend and backend
 
 ## Available Scripts
 
