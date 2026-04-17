@@ -38,7 +38,7 @@ jobs:
         run: |
           if [ -n "$DOPPLER_TOKEN" ]; then
             echo "Attempting to build with Doppler secrets..."
-            if doppler run --config prd -- npm run build; then
+            if doppler run --project glycogrit --config prd_backend -- npm run build; then
               echo "✅ Build completed successfully with Doppler secrets"
             else
               echo "⚠️  Doppler failed (invalid token or configuration), falling back to build without secrets..."
