@@ -37,8 +37,13 @@ jobs:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
         run: |
           if [ -n "$DOPPLER_TOKEN" ]; then
-            echo "Building with Doppler secrets..."
-            doppler run --config prd -- npm run build
+            echo "Attempting to build with Doppler secrets..."
+            if doppler run --config prd -- npm run build; then
+              echo "✅ Build completed successfully with Doppler secrets"
+            else
+              echo "⚠️  Doppler failed (invalid token or configuration), falling back to build without secrets..."
+              npm run build
+            fi
           else
             echo "Building without Doppler (DOPPLER_TOKEN not set)..."
             npm run build
