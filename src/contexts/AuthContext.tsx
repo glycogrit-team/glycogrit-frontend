@@ -15,6 +15,8 @@ interface User {
   state?: string;
   is_active: boolean;
   email_verified: boolean;
+  oauth_provider?: string;
+  profile_picture_url?: string;
 }
 
 interface AuthContextType {
@@ -22,6 +24,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (token: string) => Promise<void>;
   register: (userData: {
     email: string;
     password: string;
@@ -76,6 +79,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(userData);
   };
 
+  const loginWithGoogle = async (token: string) => {
+    const response = await apiClient.googleAuth(token);
+    const { access_token } = response;
+
+    // Store token
+    localStorage.setItem(TOKEN_KEY, access_token);
+    apiClient.setAuthToken(access_token);
+
+    // Fetch user data
+    const userData = await apiClient.getCurrentUser();
+    setUser(userData);
+  };
+
   const register = async (userData: {
     email: string;
     password: string;
@@ -119,6 +135,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: !!user,
     isLoading,
     login,
+    loginWithGoogle,
     register,
     logout,
     refreshUser,
