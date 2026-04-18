@@ -329,8 +329,24 @@ export class GlycogritAPIClient {
     state?: string;
     is_active: boolean;
     email_verified: boolean;
+    oauth_provider?: string;
+    profile_picture_url?: string;
   }> {
     const response = await this.fetch<any>('/api/v1/auth/me');
+    return response.data;
+  }
+
+  /**
+   * Google OAuth authentication
+   */
+  async googleAuth(token: string): Promise<{ access_token: string; token_type: string }> {
+    const response = await this.fetch<{ access_token: string; token_type: string }>(
+      '/api/v1/auth/google',
+      {
+        method: 'POST',
+        body: JSON.stringify({ token }),
+      }
+    );
     return response.data;
   }
 }
