@@ -2,11 +2,9 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Button from '../common/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { GoogleLoginButton } from '../auth/GoogleLoginButton';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = () => {
@@ -103,73 +101,22 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowLoginModal(true)}
-                  >
-                    Sign In
-                  </Button>
-                  <Button size="sm" onClick={() => setShowLoginModal(true)}>
-                    Get Started
-                  </Button>
+                  <Link to="/login">
+                    <Button variant="outline" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </Link>
                 </>
               )}
             </div>
           </div>
         </div>
       </nav>
-
-      {/* Login Modal */}
-      {showLoginModal && !isAuthenticated && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8 relative">
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to GlycoGrit</h2>
-              <p className="text-gray-600">Sign in to start your fitness journey</p>
-            </div>
-
-            <div className="space-y-4">
-              <GoogleLoginButton
-                onSuccess={() => setShowLoginModal(false)}
-                onError={(error) => {
-                  console.error('Login error:', error);
-                  alert(`Sign in failed: ${error}`);
-                }}
-              />
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Secure sign-in with Google</span>
-                </div>
-              </div>
-
-              <p className="text-xs text-center text-gray-500 mt-4">
-                By continuing, you agree to our{' '}
-                <Link to="/terms-of-service" className="text-primary-600 hover:underline">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy-policy" className="text-primary-600 hover:underline">
-                  Privacy Policy
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
