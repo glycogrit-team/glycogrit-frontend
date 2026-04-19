@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import GoogleLoginButton from '../components/auth/GoogleLoginButton';
+import { GoogleLoginButton } from '../components/auth/GoogleLoginButton';
 
 export default function Login() {
   const [email, setEmail] = useState('');
