@@ -1,15 +1,20 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Navbar() {
-  const { user, isAuthenticated, logout } = useAuth();
-  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, isAdmin, login, logout } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [email, setEmail] = useState('');
 
-  const handleLogout = () => {
-    logout();
-    setShowUserMenu(false);
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      login(email);
+      setShowLoginModal(false);
+      setEmail('');
+    }
   };
 
   return (
@@ -28,95 +33,80 @@ export default function Navbar() {
               <Link to="/challenges" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
                 Challenges
               </Link>
-              <Link to="/gallery" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
-                Gallery
-              </Link>
               <a href="#about" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
                 About
+              </a>
+              <a href="#how-it-works" className="text-gray-700 hover:text-primary-600 font-medium transition-colors">
+                How It Works
               </a>
             </div>
 
             <div className="flex items-center space-x-4">
-              {isAuthenticated && user ? (
+              {user ? (
                 <>
-                  <Link to="/dashboard">
-                    <Button variant="outline" size="sm">
-                      Dashboard
-                    </Button>
-                  </Link>
-
-                  {/* User Menu */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="flex items-center space-x-2 focus:outline-none"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
-                        {user.profile_picture_url ? (
-                          <img
-                            src={user.profile_picture_url}
-                            alt={user.first_name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <span>
-                            {user.first_name[0]}
-                            {user.last_name[0]}
-                          </span>
-                        )}
-                      </div>
-                    </button>
-
-                    {/* Dropdown Menu */}
-                    {showUserMenu && (
-                      <>
-                        <div
-                          className="fixed inset-0 z-10"
-                          onClick={() => setShowUserMenu(false)}
-                        />
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-20 border border-gray-200">
-                          <div className="px-4 py-2 border-b border-gray-200">
-                            <p className="text-sm font-semibold text-gray-900">
-                              {user.first_name} {user.last_name}
-                            </p>
-                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                          </div>
-                          <Link
-                            to="/dashboard"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={() => setShowUserMenu(false)}
-                          >
-                            Dashboard
-                          </Link>
-                          <button
-                            onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                          >
-                            Sign Out
-                          </button>
-                        </div>
-                      </>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-700">{user.email}</span>
+                    {isAdmin && (
+                      <span className="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-800 rounded">
+                        Admin
+                      </span>
                     )}
                   </div>
+                  <Button variant="outline" size="sm" onClick={logout}>
+                    Logout
+                  </Button>
                 </>
               ) : (
                 <>
-                  <Link to="/login">
-                    <Button variant="outline" size="sm">
-                      Sign In
-                    </Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button size="sm">
-                      Sign Up
-                    </Button>
-                  </Link>
+                  <Button variant="outline" size="sm" onClick={() => setShowLoginModal(true)}>
+                    Sign In
+                  </Button>
+                  <Button size="sm">
+                    Get Started
+                  </Button>
                 </>
               )}
             </div>
           </div>
         </div>
       </nav>
+
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h2 className="text-2xl font-bold mb-4">Sign In</h2>
+            <p className="text-gray-600 mb-4 text-sm">
+              For testing: Use "glycogrit@gmail.com" to login as admin, or any other email for regular user.
+            </p>
+            <form onSubmit={handleLogin}>
+              <input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                required
+              />
+              <div className="flex gap-3">
+                <Button type="submit" fullWidth>
+                  Sign In
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  fullWidth
+                  onClick={() => {
+                    setShowLoginModal(false);
+                    setEmail('');
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
