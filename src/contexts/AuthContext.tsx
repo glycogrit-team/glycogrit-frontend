@@ -1,147 +1,75 @@
-/**
- * Authentication Context
- * Manages user authentication state and provides auth methods
- */
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiClient } from '../lib/api-client';
-
-interface User {
+export interface User {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
-  city?: string;
-  state?: string;
+  name: string;
+  role: 'user' | 'admin' | 'super_admin';
   is_active: boolean;
-  email_verified: boolean;
-  oauth_provider?: string;
-  profile_picture_url?: string;
+  token?: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean;
+  isAdmin: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  loginWithGoogle: (token: string) => Promise<void>;
-  register: (userData: {
-    email: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-    city?: string;
-    state?: string;
-  }) => Promise<void>;
+  token: string | null;
+  login: (email: string) => void;
   logout: () => void;
-  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const TOKEN_KEY = 'glycogrit_auth_token';
-
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize auth state from localStorage
   useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
-      if (token) {
-        apiClient.setAuthToken(token);
-        try {
-          const userData = await apiClient.getCurrentUser();
-          setUser(userData);
-        } catch (error) {
-          // Token is invalid, clear it
-          localStorage.removeItem(TOKEN_KEY);
-          apiClient.setAuthToken(null);
-        }
+    // Check for stored user in localStorage
+    const storedUser = localStorage.getItem('glycogrit_user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('Failed to parse stored user:', error);
+        localStorage.removeItem('glycogrit_user');
       }
-      setIsLoading(false);
-    };
-
-    initAuth();
+    }
+    setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await apiClient.login({ email, password });
-    const { access_token } = response;
+  const login = (email: string) => {
+    // For testing: Generate a mock token
+    // In production, this would come from Firebase/Google OAuth
+    const mockToken = `mock-token-${email}-${Date.now()}`;
 
-    // Store token
-    localStorage.setItem(TOKEN_KEY, access_token);
-    apiClient.setAuthToken(access_token);
-
-    // Fetch user data
-    const userData = await apiClient.getCurrentUser();
-    setUser(userData);
-  };
-
-  const loginWithGoogle = async (token: string) => {
-    const response = await apiClient.googleAuth(token);
-    const { access_token } = response;
-
-    // Store token
-    localStorage.setItem(TOKEN_KEY, access_token);
-    apiClient.setAuthToken(access_token);
-
-    // Fetch user data
-    const userData = await apiClient.getCurrentUser();
-    setUser(userData);
-  };
-
-  const register = async (userData: {
-    email: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-    city?: string;
-    state?: string;
-  }) => {
-    const response = await apiClient.register(userData);
-    const { access_token } = response;
-
-    // Store token
-    localStorage.setItem(TOKEN_KEY, access_token);
-    apiClient.setAuthToken(access_token);
-
-    // Fetch user data
-    const userDataResponse = await apiClient.getCurrentUser();
-    setUser(userDataResponse);
+    const mockUser: User = {
+      id: 22,
+      email: email,
+      name: email.split('@')[0],
+      role: email === 'glycogrit@gmail.com' ? 'admin' : 'user',
+      is_active: true,
+      token: mockToken,
+    };
+    setUser(mockUser);
+    localStorage.setItem('glycogrit_user', JSON.stringify(mockUser));
+    localStorage.setItem('glycogrit_token', mockToken);
   };
 
   const logout = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    apiClient.setAuthToken(null);
     setUser(null);
+    localStorage.removeItem('glycogrit_user');
+    localStorage.removeItem('glycogrit_token');
   };
 
-  const refreshUser = async () => {
-    if (!apiClient.getAuthToken()) return;
+  const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
+  const token = user?.token || null;
 
-    try {
-      const userData = await apiClient.getCurrentUser();
-      setUser(userData);
-    } catch (error) {
-      // Token is invalid, clear it
-      logout();
-    }
-  };
-
-  const value: AuthContextType = {
-    user,
-    isAuthenticated: !!user,
-    isLoading,
-    login,
-    loginWithGoogle,
-    register,
-    logout,
-    refreshUser,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, isAdmin, isLoading, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
