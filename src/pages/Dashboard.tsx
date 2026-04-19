@@ -9,6 +9,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
+import StravaConnect from '../components/strava/StravaConnect';
 import { useAuth } from '../contexts/AuthContext';
 import { apiClient } from '../lib/api-client';
 import { Challenge } from '../types/challenge';
@@ -153,6 +154,9 @@ export default function Dashboard() {
                 </div>
               </div>
             </Card>
+
+            {/* Strava Connection Card */}
+            <StravaConnect />
           </div>
 
           {/* Right Column - Challenges & Activities */}
