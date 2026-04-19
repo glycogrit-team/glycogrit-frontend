@@ -41,7 +41,7 @@ class StravaService {
    * Get authorization headers with JWT token
    */
   private getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('glycogrit_auth_token');
     return {
       'Content-Type': 'application/json',
       ...(token ? { 'Authorization': `Bearer ${token}` } : {})
