@@ -121,3 +121,10 @@ export class RouteConfig {
     return `/challenges/${id}`;
   }
 }
+
+// Simple config object for direct access
+export const config = {
+  apiUrl: AppConfig.API_BASE_URL,
+  apiTimeout: AppConfig.API_TIMEOUT,
+  apiRetryAttempts: AppConfig.API_RETRY_ATTEMPTS,
+};
