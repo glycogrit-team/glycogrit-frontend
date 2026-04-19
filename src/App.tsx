@@ -41,7 +41,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/auth/strava/callback" element={<StravaCallback />} />
+              <Route
+                path="/auth/strava/callback"
+                element={
+                  <ProtectedRoute>
+                    <StravaCallback />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/data-deletion" element={<DataDeletion />} />
