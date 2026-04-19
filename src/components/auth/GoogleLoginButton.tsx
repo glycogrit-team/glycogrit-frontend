@@ -32,18 +32,34 @@ export function GoogleLoginButton({ onSuccess, onError }: GoogleLoginButtonProps
         // Default: redirect to dashboard
         navigate('/dashboard');
       }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google';
+    } catch (error: any) {
       console.error('Google sign-in error:', error);
+
+      // Provide user-friendly error messages
+      let errorMessage = 'Failed to sign in with Google';
+      const errorString = error.message || error.toString();
+
+      if (errorString.includes('network') || errorString.includes('fetch')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (errorString.includes('invalid') || errorString.includes('token')) {
+        errorMessage = 'Google authentication failed. Please try again.';
+      } else if (errorString.includes('rate limit') || errorString.includes('too many')) {
+        errorMessage = 'Too many attempts. Please try again in a few minutes.';
+      } else if (errorString) {
+        errorMessage = errorString;
+      }
 
       if (onError) {
         onError(errorMessage);
+      } else {
+        // Show alert if no error handler provided
+        alert(`Sign in failed: ${errorMessage}`);
       }
     }
   };
 
   const handleError = () => {
-    const errorMessage = 'Google sign-in failed';
+    const errorMessage = 'Google sign-in was cancelled or failed. Please try again.';
     console.error(errorMessage);
 
     if (onError) {

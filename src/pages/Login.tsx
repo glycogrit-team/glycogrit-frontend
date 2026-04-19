@@ -19,9 +19,26 @@ export default function Login() {
     try {
       await login(email, password);
       navigate('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password. Please try again.');
+    } catch (err: any) {
       console.error('Login error:', err);
+
+      // Handle specific error messages from backend
+      const errorMessage = err.message || err.toString();
+
+      if (errorMessage.includes('Invalid credentials') || errorMessage.includes('incorrect')) {
+        setError('Invalid email or password. Please try again.');
+      } else if (errorMessage.includes('not found') || errorMessage.includes('does not exist')) {
+        setError('No account found with this email. Please sign up first.');
+      } else if (errorMessage.includes('inactive') || errorMessage.includes('disabled')) {
+        setError('Your account has been disabled. Please contact support.');
+      } else if (errorMessage.includes('rate limit') || errorMessage.includes('too many')) {
+        setError('Too many login attempts. Please try again in a few minutes.');
+      } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        // Show the actual error message from backend if available
+        setError(errorMessage || 'Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
