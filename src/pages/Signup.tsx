@@ -49,12 +49,25 @@ export default function Signup() {
       });
       navigate('/dashboard');
     } catch (err: any) {
-      if (err.message?.includes('already exists') || err.message?.includes('duplicate')) {
-        setError('An account with this email already exists. Please sign in instead.');
-      } else {
-        setError('Failed to create account. Please try again.');
-      }
       console.error('Signup error:', err);
+
+      // Handle specific error messages from backend
+      const errorMessage = err.message || err.toString();
+
+      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate')) {
+        setError('An account with this email already exists. Please sign in instead.');
+      } else if (errorMessage.includes('invalid email') || errorMessage.includes('email')) {
+        setError('Please enter a valid email address.');
+      } else if (errorMessage.includes('password')) {
+        setError('Password must meet the requirements. Please try a stronger password.');
+      } else if (errorMessage.includes('rate limit') || errorMessage.includes('too many')) {
+        setError('Too many attempts. Please try again in a few minutes.');
+      } else if (errorMessage.includes('network') || errorMessage.includes('fetch')) {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        // Show the actual error message from backend if available
+        setError(errorMessage || 'Failed to create account. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
